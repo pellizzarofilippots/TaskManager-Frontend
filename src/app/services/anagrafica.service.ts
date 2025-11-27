@@ -42,14 +42,23 @@ export class AnagraficaService {
 }
 
   getById(id: number): Observable<Anagrafica> {
-    return this.http.get<Anagrafica>(`${this.apiUrl}/${id}`, { withCredentials: true });
+    const token = localStorage.getItem('token');
+    return this.http.get<Anagrafica>(`${this.apiUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` } // aggiungi l’header
+  });
   }
 
   create(utente: Anagrafica): Observable<Anagrafica> {
-    return this.http.post<Anagrafica>(this.apiUrl, utente, { withCredentials: true });
+    const token = localStorage.getItem('token');
+    return this.http.post<Anagrafica>(this.apiUrl, utente, {
+    headers: { Authorization: `Bearer ${token}` } // aggiungi l’header
+  });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
+    const token = localStorage.getItem('token');
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` } // aggiungi l’header
+  });
   }
 }

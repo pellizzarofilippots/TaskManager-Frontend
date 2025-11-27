@@ -64,4 +64,8 @@ export class ProgettiListComponent implements OnInit {
       this.progetti = this.progetti.filter(p => p.id !== id);
     });
   }
+
+  isAdmin(): boolean {
+  return Number(localStorage.getItem('ruolo')) === 1;
+}
 }

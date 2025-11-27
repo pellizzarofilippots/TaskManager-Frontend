@@ -39,23 +39,38 @@ export class UtentiService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Utente[]> {
-    return this.http.get<Utente[]>(this.apiUrl);
+    const token = localStorage.getItem('token'); 
+    return this.http.get<Utente[]>(this.apiUrl, {
+    headers: { Authorization: `Bearer ${token}` } // aggiungi l’header
+  });
   }
 
    getById(id: number): Observable<Utente> {
-    return this.http.get<Utente>(`${this.apiUrl}/id/${id}`, { withCredentials: true });
+    const token = localStorage.getItem('token'); 
+    return this.http.get<Utente>(`${this.apiUrl}/id/${id}`, {
+    headers: { Authorization: `Bearer ${token}`} // aggiungi l’header
+  });
   }
 
 
   create(utente: Utente): Observable<Utente> {
-    return this.http.post<Utente>(this.apiUrl, utente, { withCredentials: true });
+    const token = localStorage.getItem('token'); 
+    return this.http.post<Utente>(this.apiUrl, utente, {
+    headers: { Authorization: `Bearer ${token}`} // aggiungi l’header
+  });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
+     const token = localStorage.getItem('token'); 
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}`} // aggiungi l’header
+  });
   }
 
  getRuoloUtente(username: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/username/${username}`, { withCredentials: true });
+   const token = localStorage.getItem('token'); 
+    return this.http.get<number>(`${this.apiUrl}/username/${username}`,{
+    headers: { Authorization: `Bearer ${token}`} // aggiungi l’header
+  });
   }
 }

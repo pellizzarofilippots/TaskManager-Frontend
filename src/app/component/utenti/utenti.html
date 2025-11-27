@@ -63,9 +63,13 @@
 
     <label>Stato ID:</label>
     <input type="number" [(ngModel)]="newUtente.statoUtenteId" name="statoUtenteId" required>
+    <label>Ruolo:</label>
+    <select [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
+    <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">
+    {{ ruolo.nomeRuolo }}
+     </option>
+    </select>
 
-    <label>Ruolo ID:</label>
-    <input type="number" [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
 
     <button type="submit" [disabled]="!newUtente.anagraficaId">
       Crea Utente

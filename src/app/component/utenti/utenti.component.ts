@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UtentiService, Utente } from '../../services/utenti.service';
 import { ActivatedRoute } from '@angular/router';
+import { RuoloService, Ruolo } from '../../services/ruoliu.service';
 
 @Component({
   selector: 'app-utenti',
@@ -15,6 +16,8 @@ export class UtentiComponent implements OnInit {
 
   utenti: Utente[] = [];
 
+  ruoli: Ruolo[] = [];
+
   newUtente: Utente = {
     userId: '',
     password: '',
@@ -25,7 +28,7 @@ export class UtentiComponent implements OnInit {
     anagraficaId: null
   };
 
-  constructor(private utentiService: UtentiService,
+  constructor(private utentiService: UtentiService,private ruoloService: RuoloService,
     private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -36,6 +39,11 @@ export class UtentiComponent implements OnInit {
     }
 
     this.load();
+
+    this.ruoloService.getAll().subscribe(data => {
+       console.log('Ruoli dal backend:', data);
+    this.ruoli = data;
+    })
   }
 
   load() {
