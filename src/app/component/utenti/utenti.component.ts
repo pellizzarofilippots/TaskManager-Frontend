@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UtentiService, Utente } from '../../services/utenti.service';
 import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { RuoloService, Ruolo } from '../../services/ruoliu.service';
 
 @Component({
   selector: 'app-utenti',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './utenti.html',
   styleUrls: ['./utenti.css']
 })
