@@ -1,0 +1,128 @@
+<!--<h2>Lista Anagrafica</h2>
+
+<h3>Crea Nuova Anagrafica</h3>
+
+<form (ngSubmit)="create()">
+
+  <label>Nome:</label>
+  <input type="text" [(ngModel)]="newUser.nome" name="nome" required>
+
+  <label>Cognome:</label>
+  <input type="text" [(ngModel)]="newUser.cognome" name="cognome" required>
+
+  <label>Data di nascita:</label>
+  <input type="date" [(ngModel)]="newUser.nascita" name="nascita">
+
+  <label>Codice Fiscale:</label>
+  <input type="text" [(ngModel)]="newUser.cf" name="cf" required maxlength="16">
+
+  <button type="submit">Crea Anagrafica</button>
+</form>
+
+<hr>
+
+<h3>Crea Utente per Anagrafica Selezionata</h3>
+<form (ngSubmit)="createUtente()">
+
+  <label>UserID:</label>
+  <input type="text" [(ngModel)]="newUtente.userId" name="userId" required>
+
+  <label>Password:</label>
+  <input type="password" [(ngModel)]="newUtente.password" name="password" required>
+
+  <label>Stato ID:</label>
+  <input type="number" [(ngModel)]="newUtente.statoId" name="statoId" required>
+
+  <label>Ruolo ID:</label>
+  <input type="number" [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
+
+  <button type="submit" [disabled]="!newUtente.anagraficaId">
+    Crea Utente (per l'anagrafica appena creata)
+  </button>
+</form>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Cognome</th>
+      <th>Nascita</th>
+      <th>CF</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+
+ <tbody>
+    <tr *ngFor="let a of utenti">
+      <td>{{ a.id }}</td>
+      <td>{{ a.nome }}</td>
+      <td>{{ a.cognome }}</td>
+      <td>{{ a.nascita }}</td>
+      <td>{{ a.cf }}</td>
+      <td>
+        
+        <button (click)="delete(a.id!)">Elimina</button>
+        <span> </span>
+        
+        <button [routerLink]="['/utenti', a.id]">Utenti</button>
+
+      </td>
+    </tr>
+  </tbody>
+</table>-->
+
+<div class="container">
+
+  <h2>Lista Anagrafica</h2>
+
+  <h3>Crea Nuova Anagrafica</h3>
+
+  <form (ngSubmit)="create()" class="form-box">
+
+    <label>Nome:</label>
+    <input type="text" [(ngModel)]="newUser.nome" name="nome" required>
+
+    <label>Cognome:</label>
+    <input type="text" [(ngModel)]="newUser.cognome" name="cognome" required>
+
+    <label>Data di nascita:</label>
+    <input type="date" [(ngModel)]="newUser.nascita" name="nascita">
+
+    <label>Codice Fiscale:</label>
+    <input type="text" [(ngModel)]="newUser.cf" name="cf" required maxlength="16">
+
+    <button type="submit">Crea Anagrafica</button>
+  </form>
+
+  <hr>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Nascita</th>
+        <th>CF</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let a of utenti">
+        <td>{{ a.id }}</td>
+        <td>{{ a.nome }}</td>
+        <td>{{ a.cognome }}</td>
+        <td>{{ a.nascita }}</td>
+        <td>{{ a.cf }}</td>
+        <td class="actions">
+          <button (click)="delete(a.id!)">Elimina</button>
+          <button [routerLink]="['/utenti', a.id]">Utenti</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

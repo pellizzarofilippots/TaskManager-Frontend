@@ -1,0 +1,103 @@
+<!--<h2>Lista Utenti</h2>
+
+<h3>Crea Utente /h3>
+<form (ngSubmit)="createUtente()">
+
+  <label>UserID:</label>
+  <input type="text" [(ngModel)]="newUtente.userId" name="userId" required>
+
+  <label>Password:</label>
+  <input type="password" [(ngModel)]="newUtente.password" name="password" required>
+
+  <label>Stato ID:</label>
+  <input type="number" [(ngModel)]="newUtente.statoId" name="statoId" required>
+
+  <label>Ruolo ID:</label>
+  <input type="number" [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
+
+  <button type="submit" [disabled]="!newUtente.anagraficaId">
+    Crea Utente (per l'anagrafica appena creata)
+  </button>
+</form>
+
+
+<hr>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>UserID</th>
+      <th>Password</th>
+      <th>Stato</th>
+      <th>Ruolo</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let u of utenti">
+      <td>{{ u.id }}</td>
+      <td>{{ u.userId }}</td>
+      <td>{{ u.statoId }}</td>
+      <td>{{ u.ruoloId }}</td>
+      <td>
+        <button (click)="delete(u.id!)">Elimina</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+<div class="container">
+
+  <h2>Lista Utenti</h2>
+
+  <h3>Crea Utente</h3>
+
+  <form (ngSubmit)="createUtente()" class="form-box">
+
+    <label>UserID:</label>
+    <input type="text" [(ngModel)]="newUtente.userId" name="userId" required>
+
+    <label>Password:</label>
+    <input type="password" [(ngModel)]="newUtente.password" name="password" required>
+
+    <label>Stato ID:</label>
+    <input type="number" [(ngModel)]="newUtente.statoUtenteId" name="statoUtenteId" required>
+
+    <label>Ruolo ID:</label>
+    <input type="number" [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
+
+    <button type="submit" [disabled]="!newUtente.anagraficaId">
+      Crea Utente
+    </button>
+  </form>
+
+  <hr>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>UserID</th>
+        <th>Password</th>
+        <th>Stato</th>
+        <th>Ruolo</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let u of utenti">
+        <td>{{ u.id }}</td>
+        <td>{{ u.userId }}</td>
+        <td>{{ u.password }}</td>
+        <td>{{ u.statoUtenteId }}</td>
+        <td>{{ u.ruoloId }}</td>
+        <td class="actions">
+          <button (click)="delete(u.id!)">Elimina</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

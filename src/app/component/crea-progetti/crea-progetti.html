@@ -1,0 +1,23 @@
+
+<!-- FORM CREAZIONE NUOVO PROGETTO -->
+<h3>Nuovo Progetto</h3>
+
+<div>
+  <label>Nome: </label>
+  <input [(ngModel)]="newProgetto.nome" placeholder="Nome progetto"><br><br>
+
+  <label>Descrizione: </label>
+  <input [(ngModel)]="newProgetto.descrizione" placeholder="Descrizione"><br><br>
+
+  <label>Data Inizio: </label>
+  <input type="date" [(ngModel)]="newProgetto.inizio"><br><br>
+
+  <label>Data Fine: </label>
+  <input type="date" [(ngModel)]="newProgetto.fine"><br><br>
+
+  <label>Responsabile ID (opzionale): </label>
+  <input type="number" [(ngModel)]="newProgetto.responsabileId"><br><br>
+
+  <button (click)="createProgetto()">Crea Progetto</button>
+</div>
+

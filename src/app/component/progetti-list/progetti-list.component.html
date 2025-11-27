@@ -1,0 +1,11 @@
+<h2>Lista Progetti</h2>
+<ul>
+  <li *ngFor="let progetto of progetti">
+    {{ progetto.nome }} - {{ progetto.descrizione }}
+     <button *ngIf="progetto.id !== undefined" (click)="delete(progetto.id)">Elimina</button>
+  </li>
+</ul>
+
+
+
+  <button routerLink="/creaProgetti">Crea nuovo progetto</button>
