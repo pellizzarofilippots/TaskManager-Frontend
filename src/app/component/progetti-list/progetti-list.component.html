@@ -3,6 +3,7 @@
   <li *ngFor="let progetto of progetti">
     {{ progetto.nome }} - {{ progetto.descrizione }}
      <button *ngIf="progetto.id !== undefined" (click)="delete(progetto.id)">Elimina</button>
+      <button *ngIf="progetto.id" [routerLink]="['/aggiungiPersone', progetto.id]">Aggiungi Persone</button>
   </li>
 </ul>
 

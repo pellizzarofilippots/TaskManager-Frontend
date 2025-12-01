@@ -2,6 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
+export interface Assegnazione {
+  personaId: number;
+  ruoloId: number;
+  hasPrgGestisci: boolean;
+  hasAttAggiungi: boolean;
+  hasAttAssegna: boolean;
+  hasAttStato: boolean;
+  hasAttPrendi: boolean;
+}
+
 export interface Progetto {
   id?: number;
   responsabileId?: number,
@@ -9,6 +20,8 @@ export interface Progetto {
   descrizione?: string;
   inizio: string;
   fine?: string;
+
+  assegnazioni: Assegnazione[];
 }
 
 @Injectable({

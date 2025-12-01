@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { RouterModule } from '@angular/router';
-import { ProgettiService, Progetto } from '../../services/progetti.service';
+import { ProgettiService, Progetto, Assegnazione} from '../../services/progetti.service';
 
 @Component({
   selector: 'app-crea-progetti',
@@ -23,8 +23,20 @@ export class CreaProgettiComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined   // ← opzionale
+    responsabileId: undefined,
+    assegnazioni: []  // ← opzionale
   };
+
+  tempAssegnazione: Assegnazione = {
+  personaId: 0,
+  ruoloId: 0,
+  hasPrgGestisci: false,
+  hasAttAggiungi: false,
+  hasAttAssegna: false,
+  hasAttStato: false,
+  hasAttPrendi: false
+};
+
 
    constructor(private progettiService: ProgettiService) {}
 
@@ -52,7 +64,9 @@ export class CreaProgettiComponent implements OnInit {
           descrizione: '',
           inizio: '',
           fine: '',
-          responsabileId: undefined
+          responsabileId: undefined,
+          assegnazioni: [] 
+
         };
       },
       error: err => {
@@ -60,4 +74,17 @@ export class CreaProgettiComponent implements OnInit {
       }
     });
   }
+   addAssegnazione(): void {
+  this.newProgetto.assegnazioni.push({...this.tempAssegnazione}); // clona l’oggetto
+  // resetta il form
+  this.tempAssegnazione = {
+    personaId: 0,
+    ruoloId: 0,
+    hasPrgGestisci: false,
+    hasAttAggiungi: false,
+    hasAttAssegna: false,
+    hasAttStato: false,
+    hasAttPrendi: false
+  };
+}
 }

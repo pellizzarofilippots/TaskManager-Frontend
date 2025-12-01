@@ -5,6 +5,7 @@ import { UtentiComponent } from './component/utenti/utenti.component'; //
 import { HomeComponent } from './component/home/home.component';
 import { AnagraficaComponent } from './component/anagrafica/anagrafica.component';
 import { CreaProgettiComponent } from './component/crea-progetti/crea-progetti.component';
+import {AggiungiPersoneComponent} from './component/aggiungi-persone/aggiungi-persone.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {path:'login' , component: LoginComponent},
@@ -16,5 +17,6 @@ export const routes: Routes = [
   // Nuova route per Utenti con parametro idAnagrafica
   { path: 'utenti/:idAnagrafica', component: UtentiComponent },
 
-  {path:'creaProgetti', component: CreaProgettiComponent}
+  {path:'creaProgetti', component: CreaProgettiComponent},
+  {path:'aggiungiPersone/:idProgetto', component:AggiungiPersoneComponent}
 ];

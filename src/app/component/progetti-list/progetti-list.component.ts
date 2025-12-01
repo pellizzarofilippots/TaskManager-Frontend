@@ -21,13 +21,16 @@ export class ProgettiListComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined   // ← opzionale
+    responsabileId: undefined,
+    assegnazioni: []   // ← opzionale
   };
 
   constructor(private progettiService: ProgettiService) {}
 
   ngOnInit(): void {
+    
     this.progettiService.getAll().subscribe(data => {
+      console.log('Progetti caricati:', data);
       this.progetti = data;
     });
   }
@@ -51,7 +54,8 @@ export class ProgettiListComponent implements OnInit {
           descrizione: '',
           inizio: '',
           fine: '',
-          responsabileId: undefined
+          responsabileId: undefined,
+          assegnazioni: [] 
         };
       },
       error: err => {
