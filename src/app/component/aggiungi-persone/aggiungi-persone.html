@@ -5,11 +5,22 @@
 <h3>Assegna persone al progetto</h3>
 
 <div>
-  <label>Persona ID:</label>
-  <input type="number" [(ngModel)]="tempAssegnazione.personaId"><br><br>
+  <label>Persona:</label>
+<select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
+  <option *ngFor="let anagrafica of anagrafiche" [value]="anagrafica.id">
+    {{ anagrafica.nome }}
+  </option>
+</select>
 
-  <label>Ruolo ID:</label>
-  <input type="number" [(ngModel)]="tempAssegnazione.ruoloId"><br><br>
+
+  
+<label>Ruolo Progetto:</label>
+<select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
+  <option *ngFor="let ruolo of ruoliProgetto" [value]="ruolo.id">
+    {{ ruolo.etichetta }}
+  </option>
+</select>
+
 
   <label>Permessi:</label><br>
 
@@ -41,12 +52,12 @@
   <button (click)="addAssegnazione()">Aggiungi persona</button>
 </div>
 
-<div *ngIf="newProgetto.assegnazioni.length > 0">
-  <h4>Persone assegnate:</h4>
 
+<div *ngIf="assegnazioni.length > 0">
+  <h4>Persone assegnate:</h4>
   <ul>
-    <li *ngFor="let a of newProgetto.assegnazioni">
-      Persona {{a.personaId}} — Ruolo {{a.ruoloId}}
+    <li *ngFor="let a of assegnazioni">
+      Persona {{a.personaId}} — Ruolo Progetto {{a.ruoloProgettoId}}
     </li>
   </ul>
 </div>

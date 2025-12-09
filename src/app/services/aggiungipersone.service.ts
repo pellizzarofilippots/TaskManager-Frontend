@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export interface Assegnazione {
   progettoId?: number;  
   personaId: number;
-  ruoloId: number;
+  ruoloProgettoId: 0,
   hasPrgGestisci: boolean;
   hasAttAggiungi: boolean;
   hasAttAssegna: boolean;
