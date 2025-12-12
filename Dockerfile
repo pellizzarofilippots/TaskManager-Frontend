@@ -17,7 +17,7 @@ RUN npm run build --prod
 # Stage 2: Serve con Nginx
 FROM nginx:alpine
 # Copia la build nella cartella di Nginx
-COPY --from=build /app/dist/task-manager-frontend/browser /usr/share/nginx/html
+COPY --from=build /app/dist/task-manager-frontend/browser git/usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Esponi la porta 80
 EXPOSE 80

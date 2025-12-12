@@ -5,6 +5,7 @@ import { UtentiService, Utente } from '../../services/utenti.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { RuoloService, Ruolo } from '../../services/ruoliu.service';
+import { StatiuService, Statou } from '../../services/statiu.service';
 
 @Component({
   selector: 'app-utenti',
@@ -19,6 +20,8 @@ export class UtentiComponent implements OnInit {
 
   ruoli: Ruolo[] = [];
 
+  statiu : Statou[] = [];
+
   newUtente: Utente = {
     userId: '',
     password: '',
@@ -29,8 +32,10 @@ export class UtentiComponent implements OnInit {
     anagraficaId: null
   };
 
+  
+
   constructor(private utentiService: UtentiService,private ruoloService: RuoloService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute, private statiuService: StatiuService) {}
 
   ngOnInit(): void {
 
@@ -44,6 +49,13 @@ export class UtentiComponent implements OnInit {
     this.ruoloService.getAll().subscribe(data => {
        console.log('Ruoli dal backend:', data);
     this.ruoli = data;
+
+    })
+
+    this.statiuService.getAll().subscribe(data => {
+       console.log('Stati dal backend:', data);
+       this.statiu = data;
+
     })
   }
 

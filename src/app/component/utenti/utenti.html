@@ -61,8 +61,15 @@
     <label>Password:</label>
     <input type="password" [(ngModel)]="newUtente.password" name="password" required>
 
-    <label>Stato ID:</label>
-    <input type="number" [(ngModel)]="newUtente.statoUtenteId" name="statoUtenteId" required>
+    <!--label>Stato ID:</label>
+    <input type="number" [(ngModel)]="newUtente.statoUtenteId" name="statoUtenteId" required-->
+     <label>Stato:</label>
+    <select [(ngModel)]="newUtente.statoUtenteId" name="statoUtenteId" required>
+    <option *ngFor="let statou of statiu" [value]="statou.id">
+    {{ statou.etichetta }}
+     </option>ng build
+
+    </select>
     <label>Ruolo:</label>
     <select [(ngModel)]="newUtente.ruoloId" name="ruoloId" required>
     <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">
