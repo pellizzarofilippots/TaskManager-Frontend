@@ -1,0 +1,65 @@
+
+<hr>
+
+<!-- SEZIONE ASSEGNAZIONE PERSONE AL PROGETTO -->
+<h3>Assegna persone al progetto</h3>
+
+<div>
+  <label>Persona:</label>
+<select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
+  <option *ngFor="let anagrafica of anagrafiche" [value]="anagrafica.id">
+    {{ anagrafica.nome }}
+  </option>
+</select>
+
+
+  
+<label>Ruolo Progetto:</label>
+<select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
+  <option *ngFor="let ruolo of ruoliProgetto" [value]="ruolo.id">
+    {{ ruolo.etichetta }}
+  </option>
+</select>
+
+
+  <label>Permessi:</label><br>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tempAssegnazione.hasPrgGestisci">
+    Gestisci progetto
+  </label><br>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAggiungi">
+    Aggiungi attività
+  </label><br>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAssegna">
+    Assegna attività
+  </label><br>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttStato">
+    Modifica stato attività
+  </label><br>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttPrendi">
+    Prendi in carico attività
+  </label><br><br>
+
+  <button (click)="addAssegnazione()">Aggiungi persona</button>
+</div>
+
+
+<div *ngIf="assegnazioni.length > 0">
+  <h4>Persone assegnate:</h4>
+  <ul>
+    <li *ngFor="let a of assegnazioni">
+      Persona {{a.personaId}} — Ruolo Progetto {{a.ruoloProgettoId}}
+    </li>
+  </ul>
+</div>
+
+<hr>
