@@ -14,7 +14,8 @@ import { AttivitàService, Attività } from '../../services/attivita.service';
   selector: 'app-attivita',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './gestisci-progetto.html'
+  templateUrl: './gestisci-progetto.html',
+  styleUrls: ['./gestisci-progetto.css']
 })
 export class GestisciProgettoCoponent implements OnInit {
 

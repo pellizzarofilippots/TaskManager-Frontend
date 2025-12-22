@@ -51,4 +51,8 @@ create(progetto: Progetto): Observable<Progetto> {
 delete(id: number): Observable<void> {
   return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
 }
+
+update(id: number, progetto: Progetto): Observable<Progetto> {
+  return this.http.put<Progetto>(`${this.apiUrl}/${id}`, progetto);
+}
 }

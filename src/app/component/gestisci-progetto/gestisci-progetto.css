@@ -1,0 +1,131 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Separatore */
+hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Titoli */
+h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Contenitore form */
+div > label {
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+/* Select */
+select {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 12px;
+  margin: 6px 0 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Permessi (checkbox) */
+label input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #007bff;
+}
+
+/* Spaziatura checkbox */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* Pulsante */
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Lista semplice */
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+/* Tabella */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+thead {
+  background-color: #f2f4f8;
+}
+
+th {
+  font-weight: 600;
+  color: #444;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tbody tr:hover {
+  background-color: #eef4ff;
+}
+
+/* Stato vuoto */
+em {
+  color: #777;
+}

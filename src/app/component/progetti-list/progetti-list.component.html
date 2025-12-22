@@ -1,4 +1,4 @@
-<h2>Lista Progetti</h2>
+<!--h2>Lista Progetti</h2>
 <ul>
   <li *ngFor="let progetto of progetti">
     {{ progetto.nome }} - {{ progetto.descrizione }}
@@ -15,4 +15,132 @@
   Crea nuovo progetto
 </button>
 
-<button routerLink="/home">Home</button>
+<button routerLink="/home">Home</button-->
+  <div class="container">
+  <div class="header">
+    <h2>Lista Progetti</h2>
+    <div class="actions">
+      <button class="btn-primary" (click)="startCreating()" *ngIf="isAdmin() && !isCreating">
+         Crea Nuovo Progetto
+      </button>
+      <button class="btn-secondary" routerLink="/home">🏠 Home</button>
+    </div>
+  </div>
+
+  <!-- Form creazione nuovo progetto -->
+  <div class="project-card creating" *ngIf="isCreating">
+    <h3>Nuovo Progetto</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nome *</label>
+        <input type="text" [(ngModel)]="newProgetto.nome" placeholder="Nome progetto" />
+      </div>
+
+      <div class="form-group">
+        <label>Descrizione</label>
+        <textarea [(ngModel)]="newProgetto.descrizione" placeholder="Descrizione progetto" rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Data Inizio *</label>
+        <input type="date" [(ngModel)]="newProgetto.inizio" />
+      </div>
+
+      <div class="form-group">
+        <label>Data Fine</label>
+        <input type="date" [(ngModel)]="newProgetto.fine" />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-success" (click)="createProgetto()">✓ Salva</button>
+      <button class="btn-cancel" (click)="cancelCreate()">✕ Annulla</button>
+    </div>
+  </div>
+
+  <!-- Grid progetti -->
+  <div class="projects-grid">
+    <div *ngFor="let progetto of progetti" class="project-card">
+      <!-- Modalità visualizzazione -->
+      <div *ngIf="editingId !== progetto.id">
+        <div class="project-header">
+          <h3>{{ progetto.nome }}</h3>
+          <span class="project-id">#{{ progetto.id }}</span>
+        </div>
+
+        <p class="project-description">{{ progetto.descrizione || 'Nessuna descrizione' }}</p>
+
+        <div class="project-dates">
+          <div class="date-item">
+            <span class="label">Inizio:</span>
+            <span class="value">{{ progetto.inizio | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="date-item" *ngIf="progetto.fine">
+            <span class="label">Fine:</span>
+            <span class="value">{{ progetto.fine | date: 'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="project-actions">
+          <button 
+            class="btn-edit" 
+            (click)="startEditing(progetto)"
+            *ngIf="isAdmin()">
+             Modifica
+          </button>
+          <button 
+            class="btn-manage" 
+            [routerLink]="['/gestisciProgetto', progetto.id]"
+            *ngIf="progetto.id">
+             Gestisci
+          </button>
+          <button 
+            class="btn-delete" 
+            (click)="delete(progetto.id!)"
+            *ngIf="isAdmin() && progetto.id !== undefined">
+             Elimina
+          </button>
+        </div>
+      </div>
+
+      <!-- Modalità editing -->
+      <div *ngIf="editingId === progetto.id" class="editing-mode">
+        <h3>Modifica Progetto</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" [(ngModel)]="editingProgetto.nome" />
+          </div>
+
+          <div class="form-group">
+            <label>Descrizione</label>
+            <textarea [(ngModel)]="editingProgetto.descrizione" rows="2"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Data Inizio *</label>
+            <input type="date" [(ngModel)]="editingProgetto.inizio" />
+          </div>
+
+          <div class="form-group">
+            <label>Data Fine</label>
+            <input type="date" [(ngModel)]="editingProgetto.fine" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-success" (click)="saveEdit()">✓ Salva</button>
+          <button class="btn-cancel" (click)="cancelEdit()">✕ Annulla</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messaggio vuoto -->
+  <div class="empty-state" *ngIf="progetti.length === 0 && !isCreating">
+    <p>📋 Nessun progetto presente</p>
+    <button class="btn-primary" (click)="startCreating()" *ngIf="isAdmin()">
+      Crea il primo progetto
+    </button>
+  </div>
+</div>

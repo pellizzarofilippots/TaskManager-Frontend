@@ -1,0 +1,104 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px;
+  color: #333;
+}
+
+/* Titoli */
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Separatore */
+hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Label */
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* Input */
+input {
+  width: 100%;
+  max-width: 340px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+  accent-color: #007bff;
+}
+
+/* Pulsanti */
+button {
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Secondari */
+button[routerLink="/home"] {
+  background-color: #6c757d;
+}
+
+button[routerLink="/home"]:hover {
+  background-color: #545b62;
+}
+
+/* Lista persone assegnate */
+ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* Spaziatura tra sezioni */
+div {
+  margin-bottom: 10px;
+}

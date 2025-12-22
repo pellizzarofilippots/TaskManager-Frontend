@@ -15,7 +15,8 @@ import { UtentiService } from '../../services/utenti.service';
     <input [(ngModel)]="username" placeholder="Username"><br><br>
     <input [(ngModel)]="password" placeholder="Password" type="password"><br><br>
     <button (click)="doLogin()">Login</button>
-  `
+  `,
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';

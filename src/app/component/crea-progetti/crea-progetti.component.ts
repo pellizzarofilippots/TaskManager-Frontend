@@ -8,7 +8,8 @@ import { ProgettiService, Progetto, Assegnazione} from '../../services/progetti.
   selector: 'app-crea-progetti',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './crea-progetti.html'
+  templateUrl: './crea-progetti.html',
+  styleUrls: ['./crea-progetti.css']
  // styleUrls: ['./progetti-list.component.css']
 })
 
