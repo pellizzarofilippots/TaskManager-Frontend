@@ -4,7 +4,7 @@
     {{ progetto.nome }} - {{ progetto.descrizione }}
     
      <button *ngIf="progetto.id !== undefined" (click)="delete(progetto.id)">Elimina</button>
-      <button *ngIf="progetto.id" [routerLink]="['/aggiungiPersone', progetto.id]">Aggiungi Persone</button>
+      <button *ngIf="progetto.id" [routerLink]="['/gestisciProgetto', progetto.id]">Gestisci Progetto</button>
   </li>
 </ul>
 

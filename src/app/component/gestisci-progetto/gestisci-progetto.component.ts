@@ -125,11 +125,21 @@ export class GestisciProgettoCoponent implements OnInit {
   }
 
   loadAssegnazioni(): void {
-    // Assumendo che esista un metodo per caricare le assegnazioni del progetto
-    // Altrimenti puoi implementarlo nel servizio
-    console.log("Caricamento assegnazioni per progetto:", this.tempAssegnazione.progettoId);
-    // this.aggiungiPersoneService.getByProgetto(this.tempAssegnazione.progettoId).subscribe(...)
+  const progettoId = this.tempAssegnazione.progettoId;
+  
+  if (!progettoId || progettoId === 0) {
+    console.warn("ID progetto non valido");
+    return;
   }
+
+  this.aggiungiPersoneService.getByProgetto(progettoId).subscribe({
+    next: (data: Assegnazione[]) => {
+      this.assegnazioni = data;
+      console.log("Assegnazioni caricate:", this.assegnazioni);
+    },
+    error: (err: any) => console.error("Errore nel caricamento delle assegnazioni:", err)
+  });
+}
 
   loadAttivita(): void {
     // Carica le attività del progetto
@@ -169,6 +179,7 @@ export class GestisciProgettoCoponent implements OnInit {
   }
 
   addAssegnazione(): void {
+    console.log('tempAssegnazione:', this.tempAssegnazione);
     this.aggiungiPersoneService.create(this.tempAssegnazione).subscribe({
       next: (created) => {
         console.log("Assegnazione creata:", created);
@@ -244,9 +255,9 @@ export class GestisciProgettoCoponent implements OnInit {
     return persona ? `${persona.nome} ${persona.cognome}` : 'N/A';
   }
 
-  getRuoloProgettoNome(ruoloId: number): string {
+getRuoloProgettoNome(ruoloId: number): string {
     const ruolo = this.ruoliProgetto.find(r => r.id === ruoloId);
-    return ruolo ? ruolo.nome : 'N/A';
+    return ruolo ? (ruolo.etichetta || ruolo.descrizione) : 'N/A';
   }
 
   getStatoNome(statoId: number): string {

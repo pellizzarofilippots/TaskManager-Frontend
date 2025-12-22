@@ -6,6 +6,7 @@ import { HomeComponent } from './component/home/home.component';
 import { AnagraficaComponent } from './component/anagrafica/anagrafica.component';
 import { CreaProgettiComponent } from './component/crea-progetti/crea-progetti.component';
 import {AggiungiPersoneComponent} from './component/aggiungi-persone/aggiungi-persone.component';
+import { GestisciProgettoCoponent } from './component/gestisci-progetto/gestisci-progetto.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {path:'login' , component: LoginComponent},
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'utenti/:idAnagrafica', component: UtentiComponent },
 
   {path:'creaProgetti', component: CreaProgettiComponent},
-  {path:'aggiungiPersone/:idProgetto', component:AggiungiPersoneComponent}
+  {path:'aggiungiPersone/:idProgetto', component:AggiungiPersoneComponent},
+  {path:'gestisciProgetto/:idProgetto', component:GestisciProgettoCoponent},
 ];

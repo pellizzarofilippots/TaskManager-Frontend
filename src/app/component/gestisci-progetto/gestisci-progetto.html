@@ -6,17 +6,27 @@
 
 <div>
   <label>Persona:</label>
-<select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
+<!--select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
   <option *ngFor="let anagrafica of anagrafiche" [value]="anagrafica.id">
     {{ anagrafica.nome }}
   </option>
+</select-->
+<select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
+  <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
+    {{ anagrafica.nome }} {{ anagrafica.cognome }}
+  </option>
 </select>
-
 
   
 <label>Ruolo Progetto:</label>
-<select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
+<!--select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
   <option *ngFor="let ruolo of ruoliProgetto" [value]="ruolo.id">
+    {{ ruolo.etichetta }}
+  </option>
+</select-->
+
+<select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
+  <option *ngFor="let ruolo of ruoliProgetto" [ngValue]="ruolo.id">
     {{ ruolo.etichetta }}
   </option>
 </select>
@@ -61,5 +71,38 @@
     </li>
   </ul>
 </div>
+
+<div *ngIf="assegnazioni.length > 0" style="margin-top: 30px;">
+  <h4>Persone assegnate al progetto:</h4>
+  <table  cellpadding="10" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Persona</th>
+        <th>Ruolo</th>
+        <th>Gestisci Progetto</th>
+        <th>Aggiungi Attività</th>
+        <th>Assegna Attività</th>
+        <th>Modifica Stato</th>
+        <th>Prendi in Carico</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of assegnazioni">
+        <td>{{ getPersonaNome(a.personaId) }}</td>
+        <td>{{ getRuoloProgettoNome(a.ruoloProgettoId) }}</td>
+        <td>{{ a.hasPrgGestisci ? '✓' : '✗' }}</td>
+        <td>{{ a.hasAttAggiungi ? '✓' : '✗' }}</td>
+        <td>{{ a.hasAttAssegna ? '✓' : '✗' }}</td>
+        <td>{{ a.hasAttStato ? '✓' : '✗' }}</td>
+        <td>{{ a.hasAttPrendi ? '✓' : '✗' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="assegnazioni.length === 0" style="margin-top: 20px;">
+  <p><em>Nessuna persona ancora assegnata a questo progetto.</em></p>
+</div>
+
 
 <hr>

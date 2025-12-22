@@ -30,7 +30,12 @@ export class AggiungiPersoneService{
             headers: { Authorization: `Bearer ${token}` }});
         }
 
-     
+       getByProgetto(progettoId: number): Observable<Assegnazione[]> {
+    const token = localStorage.getItem('token');
+    return this.http.get<Assegnazione[]>(`${this.apiUrl}/progetto/${progettoId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
 
 
     }
