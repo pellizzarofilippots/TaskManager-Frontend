@@ -265,9 +265,14 @@ getRuoloProgettoNome(ruoloId: number): string {
     const stato = this.stati.find(s => s.id === statoId);
     return stato ? stato.nome : 'N/A';
   }
+  
 
   getPrioritaNome(prioritaId: number): string {
     const priorita = this.priorita.find(p => p.id === prioritaId);
     return priorita ? priorita.nome : 'N/A';
+  }
+
+    isAdmin(): boolean {
+    return Number(localStorage.getItem('ruolo')) === 1;
   }
 }

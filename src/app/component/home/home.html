@@ -1,9 +1,69 @@
-<h2>Benvenuto nella Home</h2>
+<!--h2>Benvenuto nella Home</h2>
 
 <p>Scegli una sezione:</p>
 
 <div class="menu">
   <button routerLink="/progetti">Progetti</button>
- <!-- <button routerLink="/utenti">Utenti</button>-->
+
   <button routerLink="/anagrafica">Anagrafica</button>
+</div-->
+<div class="container">
+  <div class="header">
+    <div>
+      <h2>Benvenuto, {{ utenteLoggato }}</h2>
+      <p class="subtitle">I tuoi progetti assegnati</p>
+    </div>
+    <div class="actions">
+     <button class="btn-secondary" routerLink="/progetti" *ngIf="isAdmin()">
+        📋 Tutti i Progetti
+      </button>
+      <button class="btn-secondary" routerLink="/anagrafica" *ngIf="isAdmin()">
+        👤 Anagrafica
+      </button>
+    </div>
+  </div>
+
+  <!-- Progetti assegnati -->
+  <div class="projects-grid" *ngIf="progetti.length > 0">
+    <div *ngFor="let progetto of progetti" class="project-card">
+      <div class="project-header">
+        <h3>{{ progetto.nome }}</h3>
+        <span class="project-id">#{{ progetto.id }}</span>
+      </div>
+
+      <!--div class="project-responsabile">
+        <span class="label">Responsabile:</span>
+        <span class="value">{{ getResponsabileName(progetto.responsabileId) }}</span>
+      </div-->
+
+      <p class="project-description">{{ progetto.descrizione || 'Nessuna descrizione' }}</p>
+
+      <div class="project-dates">
+        <div class="date-item">
+          <span class="label">Inizio:</span>
+          <span class="value">{{ progetto.inizio | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="date-item" *ngIf="progetto.fine">
+          <span class="label">Fine:</span>
+          <span class="value">{{ progetto.fine | date: 'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="project-actions">
+        <button 
+          class="btn-manage" 
+          [routerLink]="['/gestisciProgetto', progetto.id]">
+          🔧 Gestisci Progetto
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="progetti.length === 0">
+    <p>📭 Non hai progetti assegnati al momento</p>
+    <button class="btn-primary" routerLink="/progetti" *ngIf="isAdmin()">
+      Visualizza tutti i progetti
+    </button>
+  </div>
 </div>

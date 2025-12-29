@@ -78,6 +78,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { RouterModule } from '@angular/router';
 import { ProgettiService, Progetto } from '../../services/progetti.service';
+import { UtentiService,Utente } from '../../services/utenti.service';
+import { AnagraficaService,Anagrafica } from '../../services/anagrafica.service';
 
 @Component({
   selector: 'app-progetti-list',
@@ -88,6 +90,8 @@ import { ProgettiService, Progetto } from '../../services/progetti.service';
 })
 export class ProgettiListComponent implements OnInit {
   progetti: Progetto[] = [];
+  utenti:Utente[]=[];
+  anagrafica:Anagrafica[]=[];
   editingId: number | null = null;
   isCreating: boolean = false;
 
@@ -96,7 +100,6 @@ export class ProgettiListComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined,
     assegnazioni: []
   };
 
@@ -105,15 +108,38 @@ export class ProgettiListComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined,
     assegnazioni: []
   };
 
-  constructor(private progettiService: ProgettiService) {}
+  constructor(private progettiService: ProgettiService,
+    private utentiService: UtentiService,
+  private anagraficaService: AnagraficaService) {}
+
+  /*ngOnInit(): void {
+    this.loadProgetti();
+  }*/
 
   ngOnInit(): void {
-    this.loadProgetti();
+  this.loadProgetti();
+   this.loadAnagrafiche();
+  console.log('editingId all\'inizio:', this.editingId);  // ← AGGIUNGI QUESTO
+}
+
+
+loadAnagrafiche(): void {
+    this.anagraficaService.getAll().subscribe(data => {
+      this.anagrafica = data;
+      console.log('Anagrafiche caricate:', this.anagrafica);
+    });
   }
+
+   getResponsabileName(responsabileId: number | undefined): string {
+    if (!responsabileId) return 'Non assegnato';
+    
+    const anagrafica = this.anagrafica.find(u => u.id === responsabileId);
+    return anagrafica ? `${anagrafica.nome} ${anagrafica.cognome}` : 'Non trovato';
+  }
+
 
   loadProgetti(): void {
     this.progettiService.getAll().subscribe(data => {
@@ -134,7 +160,7 @@ export class ProgettiListComponent implements OnInit {
       descrizione: '',
       inizio: '',
       fine: '',
-      responsabileId: undefined,
+  
       assegnazioni: []
     };
   }
@@ -170,7 +196,6 @@ export class ProgettiListComponent implements OnInit {
       descrizione: '',
       inizio: '',
       fine: '',
-      responsabileId: undefined,
       assegnazioni: []
     };
   }

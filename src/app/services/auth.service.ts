@@ -34,6 +34,7 @@ export class AuthService {
       localStorage.setItem('token', res.token);
       localStorage.setItem('username', res.username);
       localStorage.setItem('ruolo', res.ruolo.toString());
+      localStorage.setItem('anagraficaId', res.anagraficaId.toString());
     }));
 }
 

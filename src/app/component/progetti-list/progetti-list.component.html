@@ -36,10 +36,22 @@
         <input type="text" [(ngModel)]="newProgetto.nome" placeholder="Nome progetto" />
       </div>
 
+      
       <div class="form-group">
         <label>Descrizione</label>
         <textarea [(ngModel)]="newProgetto.descrizione" placeholder="Descrizione progetto" rows="2"></textarea>
       </div>
+
+        
+      <!--div class="form-group">
+        <label>Responsabile</label>
+        <select [(ngModel)]="newProgetto.responsabileId">
+          <option value="">Seleziona un responsabile</option>
+          <option *ngFor="let anagrafica of anagrafica" [value]="anagrafica.id">
+            {{ anagrafica.nome }} {{ anagrafica.cognome }}
+          </option>
+        </select>
+      </div-->
 
       <div class="form-group">
         <label>Data Inizio *</label>
@@ -58,15 +70,22 @@
     </div>
   </div>
 
-  <!-- Grid progetti -->
+
   <div class="projects-grid">
     <div *ngFor="let progetto of progetti" class="project-card">
-      <!-- Modalità visualizzazione -->
+   
       <div *ngIf="editingId !== progetto.id">
         <div class="project-header">
           <h3>{{ progetto.nome }}</h3>
           <span class="project-id">#{{ progetto.id }}</span>
         </div>
+
+       
+        <!--div class="project-responsabile">
+  <span class="label">Responsabile:</span>
+  <span class="value">{{ getResponsabileName(progetto.responsabileId) }}</span>
+</div-->
+ 
 
         <p class="project-description">{{ progetto.descrizione || 'Nessuna descrizione' }}</p>
 
@@ -103,7 +122,7 @@
         </div>
       </div>
 
-      <!-- Modalità editing -->
+
       <div *ngIf="editingId === progetto.id" class="editing-mode">
         <h3>Modifica Progetto</h3>
         <div class="form-grid">
@@ -111,6 +130,9 @@
             <label>Nome *</label>
             <input type="text" [(ngModel)]="editingProgetto.nome" />
           </div>
+          <div class ="form-group">
+            <label>Responsabile</label>
+            <input type="text" [value]="editingProgetto.responsabileId" disabled />
 
           <div class="form-group">
             <label>Descrizione</label>
@@ -136,11 +158,12 @@
     </div>
   </div>
 
-  <!-- Messaggio vuoto -->
+  
   <div class="empty-state" *ngIf="progetti.length === 0 && !isCreating">
-    <p>📋 Nessun progetto presente</p>
+    <p> Nessun progetto presente</p>
     <button class="btn-primary" (click)="startCreating()" *ngIf="isAdmin()">
       Crea il primo progetto
     </button>
   </div>
 </div>
+
