@@ -6,13 +6,13 @@ export interface Attività {
   id?: number;
   progettoId?: number;  
   statoId: number;
-  prioritàId: number;
-  personaId: number;
-  tipoAttivitàId: number;
+  prioritaId: number;  // ← Senza accento (backend usa "priorita")
+  operatoreId?: number;  // ← Cambia da personaId (backend usa "operatore")
+  tipoId: number;  // ← Cambia da tipoAttivitàId (backend usa "tipo")
   nome: string;
   descrizione: string;
-  inizio: Date;
-  fine: Date;
+  inizio: Date | string;  // ← Può essere Date o string
+  fine: Date | string;
 }
 
 @Injectable({

@@ -30,7 +30,7 @@ export class AggiungiPersoneComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined,
+
     assegnazioni: []  // ← opzionale
   };
 

@@ -94,3 +94,142 @@
 
 
 <hr>
+
+
+<hr>
+
+<!-- SEZIONE ATTIVITÀ -->
+<div>
+  <h3>Attività del Progetto</h3>
+
+  <!-- Bottone per mostrare il form di creazione attività -->
+  <button (click)="toggleAttivitaForm()" style="margin-bottom: 20px;">
+    {{ showAttivitaForm ? 'Annulla' : '➕ Aggiungi Attività' }}
+  </button>
+
+  <!-- FORM CREAZIONE ATTIVITÀ -->
+  <div *ngIf="showAttivitaForm" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; background-color: #f9f9f9;">
+    <h4>Nuova Attività</h4>
+
+    <div style="margin-bottom: 15px;">
+      <label>Nome Attività *</label><br>
+      <input type="text" [(ngModel)]="tempAttivita.nome" placeholder="Nome attività" 
+             style="width: 100%; padding: 8px; box-sizing: border-box;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <label>Descrizione</label><br>
+      <textarea [(ngModel)]="tempAttivita.descrizione" placeholder="Descrizione attività" 
+                rows="3" style="width: 100%; padding: 8px; box-sizing: border-box;"></textarea>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+      <div>
+        <label>Stato *</label><br>
+        <select [(ngModel)]="tempAttivita.statoId" style="width: 100%; padding: 8px;">
+          <option [ngValue]="0">-- Seleziona Stato --</option>
+          <option *ngFor="let stato of stati" [ngValue]="stato.id">
+            {{ stato.etichetta }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label>Priorità *</label><br>
+        <select [(ngModel)]="tempAttivita.prioritaId" style="width: 100%; padding: 8px;">
+          <option [ngValue]="0">-- Seleziona Priorità --</option>
+          <option *ngFor="let priorita of priorita" [ngValue]="priorita.id">
+            {{ priorita.nome }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+      <div>
+        <label>Tipo Attività *</label><br>
+        <select [(ngModel)]="tempAttivita.tipoId" style="width: 100%; padding: 8px;">
+          <option [ngValue]="0">-- Seleziona Tipo --</option>
+          <option *ngFor="let tipo of tipiAttivita" [ngValue]="tipo.id">
+            {{ tipo.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label>Operatore (Opzionale)</label><br>
+        <select [(ngModel)]="tempAttivita.operatoreId" style="width: 100%; padding: 8px;">
+          <option [ngValue]="0">-- Non assegnato --</option>
+          <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
+            {{ anagrafica.nome }} {{ anagrafica.cognome }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+      <div>
+        <label>Data Inizio *</label><br>
+        <input type="date" [(ngModel)]="tempAttivita.inizio" style="width: 100%; padding: 8px;">
+      </div>
+
+      <div>
+        <label>Data Fine</label><br>
+        <input type="date" [(ngModel)]="tempAttivita.fine" style="width: 100%; padding: 8px;">
+      </div>
+    </div>
+
+    <button (click)="addAttivita()" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer; margin-right: 10px;">
+      ✓ Crea Attività
+    </button>
+    <button (click)="toggleAttivitaForm()" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; cursor: pointer;">
+      ✗ Annulla
+    </button>
+  </div>
+
+  <!-- LISTA ATTIVITÀ -->
+  <div *ngIf="attivita.length > 0" style="margin-top: 30px;">
+    <h4>Attività Esistenti:</h4>
+    <table cellpadding="10" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #f0f0f0;">
+          <th style="border: 1px solid #ddd;">ID</th>
+          <th style="border: 1px solid #ddd;">Nome</th>
+          <th style="border: 1px solid #ddd;">Descrizione</th>
+          <th style="border: 1px solid #ddd;">Stato</th>
+          <th style="border: 1px solid #ddd;">Priorità</th>
+          <th style="border: 1px solid #ddd;">Operatore</th>
+          <th style="border: 1px solid #ddd;">Inizio</th>
+          <th style="border: 1px solid #ddd;">Fine</th>
+          <th style="border: 1px solid #ddd;">Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let att of attivita" style="border: 1px solid #ddd;">
+          <td style="border: 1px solid #ddd;">{{ att.id }}</td>
+          <td style="border: 1px solid #ddd;"><strong>{{ att.nome }}</strong></td>
+          <td style="border: 1px solid #ddd;">{{ att.descrizione || 'N/A' }}</td>
+          <td style="border: 1px solid #ddd;">{{ getStatoNome(att.statoId) }}</td>
+          <td style="border: 1px solid #ddd;">{{ getPrioritaNome(att.prioritaId) }}</td>
+          <td style="border: 1px solid #ddd;">{{ att.operatoreId ? getPersonaNome(att.operatoreId) : 'Non assegnato' }}</td>
+          <td style="border: 1px solid #ddd;">{{ att.inizio | date: 'dd/MM/yyyy' }}</td>
+          <td style="border: 1px solid #ddd;">{{ att.fine | date: 'dd/MM/yyyy' }}</td>
+          <td style="border: 1px solid #ddd;">
+            <button style="padding: 5px 10px; background-color: #007bff; color: white; border: none; cursor: pointer; margin-right: 5px;">
+               Modifica
+            </button>
+            <button style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; cursor: pointer;">
+               Elimina
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="attivita.length === 0 && !showAttivitaForm" style="margin-top: 20px;">
+    <p><em>Nessuna attività ancora creata per questo progetto.</em></p>
+  </div>
+</div>
+
+<hr>

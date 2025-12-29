@@ -15,7 +15,6 @@ export interface Assegnazione {
 
 export interface Progetto {
   id?: number;
-  responsabileId?: number,
   nome: string;
   descrizione?: string;
   inizio: string;

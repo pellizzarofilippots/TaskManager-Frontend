@@ -24,7 +24,6 @@ export class CreaProgettiComponent implements OnInit {
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined,
     assegnazioni: []  // ← opzionale
   };
 
@@ -65,7 +64,6 @@ export class CreaProgettiComponent implements OnInit {
           descrizione: '',
           inizio: '',
           fine: '',
-          responsabileId: undefined,
           assegnazioni: [] 
 
         };

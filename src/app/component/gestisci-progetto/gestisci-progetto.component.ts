@@ -9,6 +9,9 @@ import { RuoloService, Ruolo } from '../../services/ruoliu.service';
 import { RuoloProgettoService, RuoloProgetto} from '../../services/ruoliprogetto.service';
 import { AnagraficaService, Anagrafica  } from '../../services/anagrafica.service';
 import { AttivitàService, Attività } from '../../services/attivita.service';
+import { PrioritaService, Priorita } from '../../services/priorita.service';  // ← AGGIUNGI
+import { TipiAttivitaService, TipoAttivita } from '../../services/tipi-attivita.service';
+import { StatiAttivitaService, StatoAttivita } from '../../services/stati-attivita.service';  // ← AGGIUNGI
 
 @Component({
   selector: 'app-attivita',
@@ -25,17 +28,15 @@ export class GestisciProgettoCoponent implements OnInit {
   anagrafiche: Anagrafica[] = [];
   attivita: Attività[] = [];
   
-  // Stati e priorità (da popolare con servizi dedicati se esistono)
-  stati: any[] = [];
-  priorita: any[] = [];
-  tipiAttivita: any[] = [];
+  stati: StatoAttivita[] = [];
+  priorita: Priorita[] = [];
+  tipiAttivita: TipoAttivita[] = [];
 
   newProgetto: Progetto = {
     nome: '',
     descrizione: '',
     inizio: '',
     fine: '',
-    responsabileId: undefined,
     assegnazioni: []
   };
 
@@ -52,16 +53,16 @@ export class GestisciProgettoCoponent implements OnInit {
 
   // Oggetto temporaneo per la nuova attività
   tempAttivita: Attività = {
-    progettoId: 0,
-    statoId: 0,
-    prioritàId: 0,
-    personaId: 0,
-    tipoAttivitàId: 0,
-    nome: '',
-    descrizione: '',
-    inizio: new Date(),
-    fine: new Date()
-  };
+  progettoId: 0,
+  statoId: 0,
+  prioritaId: 0,  // ← Senza accento
+  operatoreId: 0,  // ← Cambia da personaId
+  tipoId: 0,  // ← Cambia da tipoAttivitàId
+  nome: '',
+  descrizione: '',
+  inizio: new Date(),
+  fine: new Date()
+};
 
   // Flag per mostrare/nascondere form
   showAssegnazioneForm: boolean = false;
@@ -73,7 +74,10 @@ export class GestisciProgettoCoponent implements OnInit {
     private ruoliProgettoService: RuoloProgettoService,
     private anagraficaService: AnagraficaService,
     private attivitaService: AttivitàService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private statiAttivitaService: StatiAttivitaService,  // ← AGGIUNGI
+    private prioritaService: PrioritaService,  // ← AGGIUNGI
+    private tipiAttivitaService: TipiAttivitaService
   ) {}
 
   ngOnInit(): void {
@@ -142,41 +146,51 @@ export class GestisciProgettoCoponent implements OnInit {
   });
 }
 
-  loadAttivita(): void {
-    // Carica le attività del progetto
-    // Devi implementare un metodo getByProgetto nel servizio AttivitàService
-    console.log("Caricamento attività per progetto:", this.tempAttivita.progettoId);
-    // this.attivitaService.getByProgetto(this.tempAttivita.progettoId).subscribe(...)
+ loadAttivita(): void {
+  const progettoId = this.tempAttivita.progettoId;
+  
+  if (!progettoId || progettoId === 0) {
+    console.warn("ID progetto non valido per attività");
+    return;
   }
 
-  loadStati(): void {
-    // Mock data - sostituisci con chiamata al servizio
-    this.stati = [
-      { id: 1, nome: 'Da iniziare' },
-      { id: 2, nome: 'In corso' },
-      { id: 3, nome: 'Completata' },
-      { id: 4, nome: 'Bloccata' }
-    ];
+  this.attivitaService.getByProgetto(progettoId).subscribe({
+    next: (data: Attività[]) => {
+      this.attivita = data;
+      console.log("Attività caricate:", this.attivita);
+    },
+    error: (err: any) => console.error("Errore nel caricamento delle attività:", err)
+  });
+}
+
+ loadStati(): void {
+    this.statiAttivitaService.getAll().subscribe({
+      next: (data: StatoAttivita[]) => {
+        this.stati = data;
+        console.log('Stati caricati dal DB:', this.stati);
+      },
+      error: (err: any) => console.error('Errore caricamento stati:', err)
+    });
   }
 
-  loadPriorita(): void {
-    // Mock data - sostituisci con chiamata al servizio
-    this.priorita = [
-      { id: 1, nome: 'Bassa' },
-      { id: 2, nome: 'Media' },
-      { id: 3, nome: 'Alta' },
-      { id: 4, nome: 'Critica' }
-    ];
+    loadPriorita(): void {
+    this.prioritaService.getAll().subscribe({
+      next: (data: Priorita[]) => {
+        this.priorita = data;
+        console.log('Priorità caricate dal DB:', this.priorita);
+      },
+      error: (err: any) => console.error('Errore caricamento priorità:', err)
+    });
   }
 
   loadTipiAttivita(): void {
-    // Mock data - sostituisci con chiamata al servizio
-    this.tipiAttivita = [
-      { id: 1, nome: 'Sviluppo' },
-      { id: 2, nome: 'Testing' },
-      { id: 3, nome: 'Documentazione' },
-      { id: 4, nome: 'Revisione' }
-    ];
+    this.tipiAttivitaService.getAll().subscribe({
+      next: (data: TipoAttivita[]) => {
+        this.tipiAttivita = data;
+        console.log('Tipi attività caricati dal DB:', this.tipiAttivita);
+      },
+      error: (err: any) => console.error('Errore caricamento tipi:', err)
+    });
   }
 
   addAssegnazione(): void {
@@ -192,24 +206,28 @@ export class GestisciProgettoCoponent implements OnInit {
     });  
   }
 
-  addAttivita(): void {
-    // Validazione base
-    if (!this.tempAttivita.nome || !this.tempAttivita.personaId) {
-      alert("Compilare tutti i campi obbligatori");
-      return;
-    }
-
-    this.attivitaService.create(this.tempAttivita).subscribe({
-      next: (created) => {
-        console.log("Attività creata:", created);
-        this.attivita.push(created);
-        this.resetTempAttivita();
-        this.showAttivitaForm = false;
-      },
-      error: (err) => console.error("Errore nella creazione dell'attività:", err)
-    });
+addAttivita(): void {
+  // Validazione
+  if (!this.tempAttivita.nome || !this.tempAttivita.statoId || 
+      !this.tempAttivita.prioritaId || !this.tempAttivita.tipoId) {
+    alert("Compilare tutti i campi obbligatori (nome, stato, priorità, tipo)");
+    return;
   }
 
+  this.attivitaService.create(this.tempAttivita).subscribe({
+    next: (created) => {
+      console.log("Attività creata:", created);
+      this.attivita.push(created);
+      this.resetTempAttivita();
+      this.showAttivitaForm = false;
+      alert("Attività creata con successo!");
+    },
+    error: (err) => {
+      console.error("Errore nella creazione dell'attività:", err);
+      alert("Errore nella creazione dell'attività");
+    }
+  });
+}
   resetTempAssegnazione(): void {
     this.tempAssegnazione = {
       progettoId: this.tempAssegnazione.progettoId,
@@ -223,19 +241,19 @@ export class GestisciProgettoCoponent implements OnInit {
     };
   }
 
-  resetTempAttivita(): void {
-    this.tempAttivita = {
-      progettoId: this.tempAttivita.progettoId,
-      statoId: 0,
-      prioritàId: 0,
-      personaId: 0,
-      tipoAttivitàId: 0,
-      nome: '',
-      descrizione: '',
-      inizio: new Date(),
-      fine: new Date()
-    };
-  }
+resetTempAttivita(): void {
+  this.tempAttivita = {
+    progettoId: this.tempAttivita.progettoId,
+    statoId: 0,
+    prioritaId: 0,  // ← Senza accento
+    operatoreId: 0,  // ← Cambia da personaId
+    tipoId: 0,  // ← Cambia da tipoAttivitàId
+    nome: '',
+    descrizione: '',
+    inizio: new Date(),
+    fine: new Date()
+  };
+}
 
   toggleAssegnazioneForm(): void {
     this.showAssegnazioneForm = !this.showAssegnazioneForm;
@@ -261,16 +279,15 @@ getRuoloProgettoNome(ruoloId: number): string {
     return ruolo ? (ruolo.etichetta || ruolo.descrizione) : 'N/A';
   }
 
-  getStatoNome(statoId: number): string {
-    const stato = this.stati.find(s => s.id === statoId);
-    return stato ? stato.nome : 'N/A';
-  }
-  
+ getStatoNome(statoId: number): string {
+  const stato = this.stati.find(s => s.id === statoId);
+  return stato ? stato.etichetta : 'N/A';  // ← Cambia da stato.nome a stato.etichetta
+}
 
-  getPrioritaNome(prioritaId: number): string {
-    const priorita = this.priorita.find(p => p.id === prioritaId);
-    return priorita ? priorita.nome : 'N/A';
-  }
+getPrioritaNome(prioritaId: number): string {
+  const priorita = this.priorita.find(p => p.id === prioritaId);
+  return priorita ? priorita.etichetta : 'N/A';  // ← Cambia da priorita.nome a priorita.etichetta
+}
 
     isAdmin(): boolean {
     return Number(localStorage.getItem('ruolo')) === 1;
