@@ -1,235 +1,320 @@
 
-<hr>
 
-<!-- SEZIONE ASSEGNAZIONE PERSONE AL PROGETTO -->
-<div *ngIf="isAdmin()">
-  <h3>Assegna persone al progetto</h3>
 
-  <div>
-    <label>Persona:</label>
-    <select [(ngModel)]="tempAssegnazione.personaId" name="personaId" required>
-      <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
-        {{ anagrafica.nome }} {{ anagrafica.cognome }}
-      </option>
-    </select>
+<!-- HEADER CON MEMBRI -->
+<div class="project-header">
+  <div class="header-top">
+    <h2>Gestione Progetto</h2>
+    <button class="btn-add-member" (click)="showAssegnazioneForm = !showAssegnazioneForm" *ngIf="isAdmin()">
+      + Aggiungi membro
+    </button>
+  </div>
+  
+  <!-- Mini cards membri (solo se ci sono assegnazioni) -->
+  <div class="team-preview" *ngIf="assegnazioni.length > 0">
+    <div class="team-member-mini" *ngFor="let a of assegnazioni">
+      <div class="member-avatar">{{ getPersonaInitials(a.personaId) }}</div>
+      <div class="member-info">
+        <span class="member-name">{{ getPersonaNome(a.personaId) }}</span>
+        <span class="member-role">{{ getRuoloProgettoNome(a.ruoloProgettoId) }}</span>
+      </div>
+    </div>
+  </div>
 
-    <label>Ruolo Progetto:</label>
-    <select [(ngModel)]="tempAssegnazione.ruoloProgettoId" name="ruoloProgettoId" required>
-      <option *ngFor="let ruolo of ruoliProgetto" [ngValue]="ruolo.id">
-        {{ ruolo.etichetta }}
-      </option>
-    </select>
-
-    <label>Permessi:</label><br>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="tempAssegnazione.hasPrgGestisci">
-      Gestisci progetto
-    </label><br>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAggiungi">
-      Aggiungi attività
-    </label><br>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAssegna">
-      Assegna attività
-    </label><br>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttStato">
-      Modifica stato attività
-    </label><br>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttPrendi">
-      Prendi in carico attività
-    </label><br><br>
-
-    <button (click)="addAssegnazione()">Aggiungi persona</button>
+  <!-- Messaggio se nessun membro -->
+  <div class="no-members" *ngIf="assegnazioni.length === 0">
+    <p>Nessun membro assegnato al progetto</p>
   </div>
 </div>
 
-<!--div *ngIf="assegnazioni.length > 0">
-  <h4>Persone assegnate:</h4>
-  <ul>
-    <li *ngFor="let a of assegnazioni">
-      Persona {{a.personaId}} — Ruolo Progetto {{a.ruoloProgettoId}}
-    </li>
-  </ul>
-</div-->
-
-<div *ngIf="assegnazioni.length > 0" style="margin-top: 30px;">
-  <h4>Persone assegnate al progetto:</h4>
-  <table  cellpadding="10" style="width: 100%; border-collapse: collapse;">
-    <thead>
-      <tr>
-        <th>Persona</th>
-        <th>Ruolo</th>
-        <th>Gestisci Progetto</th>
-        <th>Aggiungi Attività</th>
-        <th>Assegna Attività</th>
-        <th>Modifica Stato</th>
-        <th>Prendi in Carico</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let a of assegnazioni">
-        <td>{{ getPersonaNome(a.personaId) }}</td>
-        <td>{{ getRuoloProgettoNome(a.ruoloProgettoId) }}</td>
-        <td>{{ a.hasPrgGestisci ? '✓' : '✗' }}</td>
-        <td>{{ a.hasAttAggiungi ? '✓' : '✗' }}</td>
-        <td>{{ a.hasAttAssegna ? '✓' : '✗' }}</td>
-        <td>{{ a.hasAttStato ? '✓' : '✗' }}</td>
-        <td>{{ a.hasAttPrendi ? '✓' : '✗' }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div *ngIf="assegnazioni.length === 0" style="margin-top: 20px;">
-  <p><em>Nessuna persona ancora assegnata a questo progetto.</em></p>
-</div>
-
-
-<hr>
-
-
-<hr>
-
-<!-- SEZIONE ATTIVITÀ -->
-<div>
-  <h3>Attività del Progetto</h3>
-
-  <!-- Bottone per mostrare il form di creazione attività -->
-  <button (click)="toggleAttivitaForm()" style="margin-bottom: 20px;">
-    {{ showAttivitaForm ? 'Annulla' : '➕ Aggiungi Attività' }}
-  </button>
-
-  <!-- FORM CREAZIONE ATTIVITÀ -->
-  <div *ngIf="showAttivitaForm" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; background-color: #f9f9f9;">
-    <h4>Nuova Attività</h4>
-
-    <div style="margin-bottom: 15px;">
-      <label>Nome Attività *</label><br>
-      <input type="text" [(ngModel)]="tempAttivita.nome" placeholder="Nome attività" 
-             style="width: 100%; padding: 8px; box-sizing: border-box;">
+<!-- FORM ASSEGNAZIONE MEMBRO (MODALE/COLLAPSABILE) -->
+<div class="form-modal" *ngIf="showAssegnazioneForm">
+  <div class="form-container">
+    <div class="form-header">
+      <h3>Aggiungi membro al team</h3>
+      <button class="btn-close" (click)="showAssegnazioneForm = false">×</button>
     </div>
 
-    <div style="margin-bottom: 15px;">
-      <label>Descrizione</label><br>
-      <textarea [(ngModel)]="tempAttivita.descrizione" placeholder="Descrizione attività" 
-                rows="3" style="width: 100%; padding: 8px; box-sizing: border-box;"></textarea>
+    <div class="form-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Persona *</label>
+          <select [(ngModel)]="tempAssegnazione.personaId" class="form-control">
+            <option [ngValue]="0">Seleziona persona</option>
+            <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
+              {{ anagrafica.nome }} {{ anagrafica.cognome }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Ruolo *</label>
+          <select [(ngModel)]="tempAssegnazione.ruoloProgettoId" class="form-control">
+            <option [ngValue]="0">Seleziona ruolo</option>
+            <option *ngFor="let ruolo of ruoliProgetto" [ngValue]="ruolo.id">
+              {{ ruolo.etichetta }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Permessi</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" [(ngModel)]="tempAssegnazione.hasPrgGestisci">
+            <span>Gestisci progetto</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAggiungi">
+            <span>Aggiungi attività</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttAssegna">
+            <span>Assegna attività</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttStato">
+            <span>Modifica stato</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" [(ngModel)]="tempAssegnazione.hasAttPrendi">
+            <span>Prendi in carico</span>
+          </label>
+        </div>
+      </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-      <div>
-        <label>Stato *</label><br>
-        <select [(ngModel)]="tempAttivita.statoId" style="width: 100%; padding: 8px;">
-          <option [ngValue]="0">-- Seleziona Stato --</option>
+    <div class="form-footer">
+      <button class="btn-secondary" (click)="showAssegnazioneForm = false">Annulla</button>
+      <button class="btn-primary" (click)="addAssegnazione()">Aggiungi membro</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE ATTIVITÀ (CENTRO PAGINA) -->
+<div class="activities-section">
+  
+  <!-- Toolbar con bottone nuova attività -->
+  <div class="activities-toolbar">
+    <h3>Attività del progetto</h3>
+    <button class="btn-primary" (click)="nuovaAttivita()">
+      + Nuova Attività
+    </button>
+  </div>
+
+  <!-- FORM CREAZIONE ATTIVITÀ (COLLAPSABILE) -->
+  <div class="form-inline-card" *ngIf="showAttivitaForm">
+    <div class="form-header">
+      <!--h4>Crea nuova attività</h4-->
+      <h4>{{ isEditMode ? 'Modifica attività' : 'Crea nuova attività' }}</h4>
+      <button class="btn-close" (click)="showAttivitaForm = false">×</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group span-2">
+        <label>Nome attività *</label>
+        <input type="text" [(ngModel)]="tempAttivita.nome" placeholder="Es: Implementare login" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Tipo *</label>
+        <select [(ngModel)]="tempAttivita.tipoId" class="form-control">
+          <option [ngValue]="0">Seleziona tipo</option>
+          <option *ngFor="let tipo of tipiAttivita" [ngValue]="tipo.id">
+            {{ tipo.etichetta }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Stato *</label>
+        <select [(ngModel)]="tempAttivita.statoId" class="form-control">
+          <option [ngValue]="0">Seleziona stato</option>
           <option *ngFor="let stato of stati" [ngValue]="stato.id">
             {{ stato.etichetta }}
           </option>
         </select>
       </div>
 
-      <div>
-        <label>Priorità *</label><br>
-        <select [(ngModel)]="tempAttivita.prioritaId" style="width: 100%; padding: 8px;">
-          <option [ngValue]="0">-- Seleziona Priorità --</option>
-          <option *ngFor="let priorita of priorita" [ngValue]="priorita.id">
-            {{ priorita.nome }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-      <div>
-        <label>Tipo Attività *</label><br>
-        <select [(ngModel)]="tempAttivita.tipoId" style="width: 100%; padding: 8px;">
-          <option [ngValue]="0">-- Seleziona Tipo --</option>
-          <option *ngFor="let tipo of tipiAttivita" [ngValue]="tipo.id">
-            {{ tipo.nome }}
+      <div class="form-group">
+        <label>Priorità *</label>
+        <select [(ngModel)]="tempAttivita.prioritaId" class="form-control">
+          <option [ngValue]="0">Seleziona priorità</option>
+          <option *ngFor="let p of priorita" [ngValue]="p.id">
+            {{ p.etichetta }}
           </option>
         </select>
       </div>
 
-      <div>
-        <label>Operatore (Opzionale)</label><br>
-        <select [(ngModel)]="tempAttivita.operatoreId" style="width: 100%; padding: 8px;">
-          <option [ngValue]="0">-- Non assegnato --</option>
+      <div class="form-group">
+        <label>Assegnato a</label>
+        <select [(ngModel)]="tempAttivita.operatoreId" class="form-control">
+          <option [ngValue]="0">Non assegnato</option>
           <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
             {{ anagrafica.nome }} {{ anagrafica.cognome }}
           </option>
         </select>
       </div>
-    </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-      <div>
-        <label>Data Inizio *</label><br>
-        <input type="date" [(ngModel)]="tempAttivita.inizio" style="width: 100%; padding: 8px;">
+      <div class="form-group">
+        <label>Data inizio *</label>
+        <input type="date" [(ngModel)]="tempAttivita.inizio" class="form-control">
       </div>
 
-      <div>
-        <label>Data Fine</label><br>
-        <input type="date" [(ngModel)]="tempAttivita.fine" style="width: 100%; padding: 8px;">
+      <div class="form-group">
+        <label>Data fine</label>
+        <input type="date" [(ngModel)]="tempAttivita.fine" class="form-control">
+      </div>
+
+      <div class="form-group span-3">
+        <label>Descrizione</label>
+        <textarea [(ngModel)]="tempAttivita.descrizione" placeholder="Descrivi l'attività..." rows="3" class="form-control"></textarea>
       </div>
     </div>
 
-    <button (click)="addAttivita()" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer; margin-right: 10px;">
-      ✓ Crea Attività
-    </button>
-    <button (click)="toggleAttivitaForm()" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; cursor: pointer;">
-      ✗ Annulla
-    </button>
+    <div class="form-footer">
+      <button class="btn-secondary" (click)="showAttivitaForm = false">Annulla</button>
+      <!--button class="btn-success" (click)="addAttivita()">Crea attività</button-->
+      <button class="btn-success" (click)="addAttivita()">
+  {{ isEditMode ? 'Salva modifiche' : 'Crea attività' }}
+</button>
+    </div>
   </div>
 
-  <!-- LISTA ATTIVITÀ -->
-  <div *ngIf="attivita.length > 0" style="margin-top: 30px;">
-    <h4>Attività Esistenti:</h4>
-    <table cellpadding="10" style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr style="background-color: #f0f0f0;">
-          <th style="border: 1px solid #ddd;">ID</th>
-          <th style="border: 1px solid #ddd;">Nome</th>
-          <th style="border: 1px solid #ddd;">Descrizione</th>
-          <th style="border: 1px solid #ddd;">Stato</th>
-          <th style="border: 1px solid #ddd;">Priorità</th>
-          <th style="border: 1px solid #ddd;">Operatore</th>
-          <th style="border: 1px solid #ddd;">Inizio</th>
-          <th style="border: 1px solid #ddd;">Fine</th>
-          <th style="border: 1px solid #ddd;">Azioni</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let att of attivita" style="border: 1px solid #ddd;">
-          <td style="border: 1px solid #ddd;">{{ att.id }}</td>
-          <td style="border: 1px solid #ddd;"><strong>{{ att.nome }}</strong></td>
-          <td style="border: 1px solid #ddd;">{{ att.descrizione || 'N/A' }}</td>
-          <td style="border: 1px solid #ddd;">{{ getStatoNome(att.statoId) }}</td>
-          <td style="border: 1px solid #ddd;">{{ getPrioritaNome(att.prioritaId) }}</td>
-          <td style="border: 1px solid #ddd;">{{ att.operatoreId ? getPersonaNome(att.operatoreId) : 'Non assegnato' }}</td>
-          <td style="border: 1px solid #ddd;">{{ att.inizio | date: 'dd/MM/yyyy' }}</td>
-          <td style="border: 1px solid #ddd;">{{ att.fine | date: 'dd/MM/yyyy' }}</td>
-          <td style="border: 1px solid #ddd;">
-            <button style="padding: 5px 10px; background-color: #007bff; color: white; border: none; cursor: pointer; margin-right: 5px;">
-               Modifica
-            </button>
-            <button style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; cursor: pointer;">
-               Elimina
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Lista attività con cards -->
+  <div class="activities-list">
+    
+    <!-- Se non ci sono attività -->
+    <div *ngIf="attivita.length === 0" class="empty-message">
+      <p>Nessuna attività creata. Inizia creando la prima attività!</p>
+    </div>
 
-  <div *ngIf="attivita.length === 0 && !showAttivitaForm" style="margin-top: 20px;">
-    <p><em>Nessuna attività ancora creata per questo progetto.</em></p>
-  </div>
-</div>
+    <!-- Card per ogni attività -->
+    <div class="activity-card" *ngFor="let att of attivita">
+      
+      <!-- Header card -->
+      <div class="card-header">
+        <div class="card-title">
+          <span class="activity-id">#{{ att.id }}</span>
+          <h4>{{ att.nome }}</h4>
+        </div>
+        <!--div class="card-actions">
+          <button class="btn-edit" (click)="modificaAttivita(att)">Modifica</button>
+          <button class="btn-delete">Elimina</button>
+        </div-->
 
-<hr>
+        <div class="card-actions">
+         <button class="btn-edit" (click)="modificaAttivita(att)">Modifica</button>
+        <button class="btn-delete" (click)="eliminaAttivita(att.id)">Elimina</button>
+        <button class="btn-registra" (click)="toggleRegistraLavoro(att)">+ Registra</button>
+        </div>
+      </div>
+
+      <!-- Descrizione (se presente) -->
+      <p class="card-description" *ngIf="att.descrizione">
+        {{ att.descrizione }}
+      </p>
+
+      <!-- Info row (stato, priorità, assegnato, date) -->
+      <div class="card-info">
+        <span class="info-badge badge-status">
+          {{ getStatoNome(att.statoId) }}
+        </span>
+        <span class="info-badge badge-priority">
+          {{ getPrioritaNome(att.prioritaId) }}
+        </span>
+        <span class="info-badge badge-assignee" *ngIf="att.operatoreId">
+          {{ getPersonaNome(att.operatoreId) }}
+        </span>
+        <span class="info-date">
+          {{ att.inizio | date: 'dd/MM/yyyy' }} - {{ att.fine | date: 'dd/MM/yyyy' }}
+        </span>
+      </div>
+
+      <!-- AGGIUNGI QUESTO CODICE DENTRO OGNI activity-card, DOPO il div card-info -->
+
+      <!-- Bottoni azioni (MODIFICA QUESTA SEZIONE) -->
+      <div class="card-actions">
+        <button class="btn-edit" (click)="modificaAttivita(att)">Modifica</button>
+        <button class="btn-delete" (click)="eliminaAttivita(att.id)">Elimina</button>
+        <button class="btn-registra" (click)="toggleRegistraLavoro(att)">+ Registra</button>
+      </div>
+
+      <!-- FORM REGISTRAZIONE LAVORO (NUOVO) -->
+      <div class="registra-lavoro-form" *ngIf="attivitaRegistraLavoro?.id === att.id">
+        <h5>Registra lavoro svolto</h5>
+        
+        <div class="form-row-compact">
+          <div class="form-group-compact">
+            <label>Data *</label>
+            <input type="date" [(ngModel)]="tempEsecuzione.data" class="form-control-compact">
+          </div>
+          
+          <div class="form-group-compact">
+            <label>Ore lavorate *</label>
+            <input type="number" step="0.5" min="0" max="24" 
+                   [(ngModel)]="tempEsecuzione.durata" 
+                   placeholder="Es: 2.5"
+                   class="form-control-compact">
+          </div>
+          
+          <div class="form-group-compact">
+            <label>Operatore *</label>
+            <select [(ngModel)]="tempEsecuzione.operatoreId" class="form-control-compact">
+              <option [ngValue]="0">Seleziona</option>
+              <option *ngFor="let anagrafica of anagrafiche" [ngValue]="anagrafica.id">
+                {{ anagrafica.nome }} {{ anagrafica.cognome }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-compact">
+          <label>Note</label>
+          <textarea [(ngModel)]="tempEsecuzione.note" 
+                    rows="2" 
+                    placeholder="Descrivi il lavoro svolto..."
+                    class="form-control-compact"></textarea>
+        </div>
+
+        <div class="form-actions-compact">
+          <button class="btn-success-small" (click)="salvaEsecuzione(att.id!)">Salva</button>
+          <button class="btn-secondary-small" (click)="annullaRegistraLavoro()">Annulla</button>
+        </div>
+      </div>
+
+      <!-- TOGGLE ESECUZIONI (NUOVO) -->
+      <div class="esecuzioni-toggle" *ngIf="getEsecuzioniCount(att.id!) > 0">
+        <button class="toggle-button" (click)="toggleEsecuzioni(att.id!)">
+          <span class="toggle-icon">{{ isEsecuzioniExpanded(att.id!) ? '▼' : '▶' }}</span>
+          Lavoro registrato ({{ getEsecuzioniCount(att.id!) }} sessioni)
+        </button>
+      </div>
+
+      <!-- LISTA ESECUZIONI (NUOVO) -->
+      <div class="esecuzioni-list" *ngIf="isEsecuzioniExpanded(att.id!)">
+        <div class="esecuzione-item" *ngFor="let exec of getEsecuzioni(att.id!)">
+          <div class="esecuzione-info">
+            <span class="esecuzione-data">{{ exec.data | date: 'dd/MM/yyyy' }}</span>
+            <span class="esecuzione-durata">{{ exec.durata }}h</span>
+            <span class="esecuzione-operatore">{{ getPersonaNome(exec.operatoreId) }}</span>
+          </div>
+          <div class="esecuzione-note" *ngIf="exec.note">
+            {{ exec.note }}
+          </div>
+          <button class="btn-delete-small" (click)="eliminaEsecuzione(exec.id!, att.id!)">
+            Elimina
+          </button>
+        </div>
+        
+        <div class="esecuzioni-totale">
+          <strong>Totale ore:</strong> {{ calcolaTotaleOre(att.id!) }}h
+        </div>
+      </div>
+
+    </div> <!-- Fine activity-card -->
+
+    </div>
+
+
